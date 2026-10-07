@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+* { box-sizing: border-box; }
+body { margin: 0; font-family: 'Inter', sans-serif; }
+
+.app-root[data-theme='claro'] {
+  --bg-page: #F6F4EF;
+  --card-bg: #FFFFFF;
+  --card-border: #E7E2D8;
+  --input-bg: #FFFFFF;
+  --input-border: #DCD6C9;
+  --text-primary: #16232C;
+  --text-secondary: #5B6B76;
+  --seg-bg: #F0EDE5;
+  --soft-border: #EFEBE2;
+  --mejor-bg: #FFF8E8;
+  --mejor-border: #E8C25A;
+  --mejor-text: #8A6A12;
+  --mejor-chip-bg: #F5DFA0;
+  --icon-muted: #B7ADA0;
+}
+.app-root[data-theme='oscuro'] {
+  --bg-page: #10181F;
+  --card-bg: #1B2731;
+  --card-border: #2B3A45;
+  --input-bg: #1F2C37;
+  --input-border: #384856;
+  --text-primary: #EDF1F4;
+  --text-secondary: #93A4AF;
+  --seg-bg: #16212A;
+  --soft-border: #2B3A45;
+  --mejor-bg: #2E2711;
+  --mejor-border: #8A6A12;
+  --mejor-text: #F0C55B;
+  --mejor-chip-bg: #4A3A12;
+  --icon-muted: #6B7A85;
+}
+
+.app-root { background: var(--bg-page); color: var(--text-primary); min-height: 100vh; }
+
+input, select, textarea, button { font-family: 'Inter', sans-serif; }
+input:focus, select:focus, textarea:focus, button:focus-visible {
+  outline: 2px solid #E8601C;
+  outline-offset: 1px;
+}

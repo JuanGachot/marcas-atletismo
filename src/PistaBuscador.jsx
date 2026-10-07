@@ -77,7 +77,9 @@ export default function PistaBuscador({ valorTexto, onCambiar, onElegir }) {
           width: "100%",
           padding: "10px 12px",
           borderRadius: 9,
-          border: "1px solid #DCD6C9",
+          border: "1px solid var(--input-border)",
+          background: "var(--input-bg)",
+          color: "var(--text-primary)",
           fontSize: 15,
         }}
       />
@@ -90,8 +92,8 @@ export default function PistaBuscador({ valorTexto, onCambiar, onElegir }) {
             left: 0,
             right: 0,
             marginTop: 4,
-            background: "#FFFFFF",
-            border: "1px solid #DCD6C9",
+            background: "var(--card-bg)",
+            border: "1px solid var(--input-border)",
             borderRadius: 10,
             boxShadow: "0 4px 14px rgba(20,48,74,0.14)",
             zIndex: 20,
@@ -108,13 +110,13 @@ export default function PistaBuscador({ valorTexto, onCambiar, onElegir }) {
                 textAlign: "left",
                 background: "transparent",
                 border: "none",
-                borderBottom: "1px solid #EFEBE2",
+                borderBottom: "1px solid var(--soft-border)",
                 padding: "9px 12px",
                 cursor: "pointer",
               }}
             >
-              <div style={{ fontSize: 14, color: "#16232C", fontWeight: 500 }}>{p.nombre}</div>
-              <div style={{ fontSize: 12, color: "#5B6B76" }}>{p.ciudad}</div>
+              <div style={{ fontSize: 14, color: "var(--text-primary)", fontWeight: 500 }}>{p.nombre}</div>
+              <div style={{ fontSize: 12, color: "var(--text-secondary)" }}>{p.ciudad}</div>
             </button>
           ))}
           <button
@@ -123,7 +125,7 @@ export default function PistaBuscador({ valorTexto, onCambiar, onElegir }) {
               display: "block",
               width: "100%",
               textAlign: "left",
-              background: "#F6F4EF",
+              background: "var(--seg-bg)",
               border: "none",
               padding: "9px 12px",
               cursor: "pointer",
@@ -138,21 +140,21 @@ export default function PistaBuscador({ valorTexto, onCambiar, onElegir }) {
       )}
 
       {mostrarNueva && (
-        <div style={{ marginTop: 8, padding: 12, background: "#F6F4EF", borderRadius: 10, border: "1px solid #E7E2D8" }}>
-          <div style={{ fontSize: 12.5, color: "#5B6B76", marginBottom: 8 }}>
+        <div style={{ marginTop: 8, padding: 12, background: "var(--seg-bg)", borderRadius: 10, border: "1px solid var(--card-border)" }}>
+          <div style={{ fontSize: 12.5, color: "var(--text-secondary)", marginBottom: 8 }}>
             Pista nueva: queda disponible para todos los que usan esta app.
           </div>
           <input
             value={nuevoNombre}
             onChange={(e) => setNuevoNombre(e.target.value)}
             placeholder="Nombre de la pista"
-            style={{ width: "100%", padding: "9px 11px", borderRadius: 8, border: "1px solid #DCD6C9", fontSize: 14, marginBottom: 7 }}
+            style={{ width: "100%", padding: "9px 11px", borderRadius: 8, border: "1px solid var(--input-border)", background: "var(--input-bg)", color: "var(--text-primary)", fontSize: 14, marginBottom: 7 }}
           />
           <input
             value={nuevaCiudad}
             onChange={(e) => setNuevaCiudad(e.target.value)}
             placeholder="Ciudad"
-            style={{ width: "100%", padding: "9px 11px", borderRadius: 8, border: "1px solid #DCD6C9", fontSize: 14, marginBottom: 9 }}
+            style={{ width: "100%", padding: "9px 11px", borderRadius: 8, border: "1px solid var(--input-border)", background: "var(--input-bg)", color: "var(--text-primary)", fontSize: 14, marginBottom: 9 }}
           />
           <div style={{ display: "flex", gap: 8 }}>
             <button
@@ -164,7 +166,7 @@ export default function PistaBuscador({ valorTexto, onCambiar, onElegir }) {
             </button>
             <button
               onClick={() => setMostrarNueva(false)}
-              style={{ background: "transparent", border: "1px solid #DCD6C9", borderRadius: 8, padding: "8px 14px", fontSize: 13.5, color: "#5B6B76", cursor: "pointer" }}
+              style={{ background: "transparent", borderRadius: 8, padding: "8px 14px", fontSize: 13.5, color: "var(--text-secondary)", cursor: "pointer" }}
             >
               Cancelar
             </button>

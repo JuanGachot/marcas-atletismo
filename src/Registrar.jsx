@@ -4,7 +4,7 @@ import { EVENTOS, eventosDisponibles } from "./eventos";
 import { parseMarca, formatValor, fechaLegible, hoyISO } from "./utils";
 import PistaBuscador from "./PistaBuscador";
 
-export default function Registrar({ userId }) {
+export default function Registrar({ userId, pistaDefecto }) {
   const [categoria, setCategoria] = useState("pista");
   const [tipo, setTipo] = useState("competencia");
   const [eventoId, setEventoId] = useState(EVENTOS.pista[5].id); // 100 m
@@ -12,8 +12,8 @@ export default function Registrar({ userId }) {
   const [viento, setViento] = useState("");
   const [peso, setPeso] = useState("");
   const [potencia, setPotencia] = useState("");
-  const [pistaTexto, setPistaTexto] = useState("");
-  const [pistaElegida, setPistaElegida] = useState(null);
+  const [pistaTexto, setPistaTexto] = useState(pistaDefecto ? `${pistaDefecto.nombre} — ${pistaDefecto.ciudad}` : "");
+  const [pistaElegida, setPistaElegida] = useState(pistaDefecto || null);
   const [fecha, setFecha] = useState(hoyISO());
   const [nota, setNota] = useState("");
   const [error, setError] = useState("");
@@ -103,6 +103,13 @@ export default function Registrar({ userId }) {
     setMarca("");
     setViento("");
     setNota("");
+    if (pistaDefecto) {
+      setPistaElegida(pistaDefecto);
+      setPistaTexto(`${pistaDefecto.nombre} — ${pistaDefecto.ciudad}`);
+    } else {
+      setPistaTexto("");
+      setPistaElegida(null);
+    }
     cargarTodo();
   }
 
@@ -147,8 +154,8 @@ export default function Registrar({ userId }) {
   return (
     <div style={{ padding: "16px 16px 40px", maxWidth: 480, margin: "0 auto" }}>
       {/* Formulario */}
-      <div style={{ background: "#FFFFFF", borderRadius: 14, padding: 18, border: "1px solid #E7E2D8", marginBottom: 20 }}>
-        <div style={{ display: "flex", background: "#F0EDE5", borderRadius: 10, padding: 3, marginBottom: 16 }}>
+      <div style={{ background: "var(--card-bg)", borderRadius: 14, padding: 18, border: "1px solid var(--card-border)", marginBottom: 20 }}>
+        <div style={{ display: "flex", background: "var(--seg-bg)", borderRadius: 10, padding: 3, marginBottom: 16 }}>
           {[
             { id: "pista", label: "Pista" },
             { id: "campo", label: "Campo" },
@@ -166,7 +173,7 @@ export default function Registrar({ userId }) {
                 fontSize: 14,
                 cursor: "pointer",
                 background: categoria === c.id ? "#14304A" : "transparent",
-                color: categoria === c.id ? "#FFFFFF" : "#5B6B76",
+                color: categoria === c.id ? "#FFFFFF" : "var(--text-secondary)",
               }}
             >
               {c.label}
@@ -175,7 +182,7 @@ export default function Registrar({ userId }) {
         </div>
 
         {categoria !== "pesas" && (
-          <div style={{ display: "flex", background: "#F0EDE5", borderRadius: 10, padding: 3, marginBottom: 16 }}>
+          <div style={{ display: "flex", background: "var(--seg-bg)", borderRadius: 10, padding: 3, marginBottom: 16 }}>
             {[
               { id: "entrenamiento", label: "Entrenamiento" },
               { id: "competencia", label: "Competencia" },
@@ -192,7 +199,7 @@ export default function Registrar({ userId }) {
                   fontSize: 14,
                   cursor: "pointer",
                   background: tipo === t.id ? "#E8601C" : "transparent",
-                  color: tipo === t.id ? "#FFFFFF" : "#5B6B76",
+                  color: tipo === t.id ? "#FFFFFF" : "var(--text-secondary)",
                 }}
               >
                 {t.label}
@@ -201,13 +208,13 @@ export default function Registrar({ userId }) {
           </div>
         )}
 
-        <label style={{ display: "block", fontSize: 13, color: "#5B6B76", marginBottom: 5 }}>
+        <label style={{ display: "block", fontSize: 13, color: "var(--text-secondary)", marginBottom: 5 }}>
           {categoria === "pesas" ? "Ejercicio" : "Prueba"}
         </label>
         <select
           value={eventoId}
           onChange={(e) => setEventoId(e.target.value)}
-          style={{ width: "100%", padding: "10px 12px", borderRadius: 9, border: "1px solid #DCD6C9", fontSize: 15, marginBottom: 14 }}
+          style={{ width: "100%", padding: "10px 12px", borderRadius: 9, border: "1px solid var(--input-border)", background: "var(--input-bg)", color: "var(--text-primary)", fontSize: 15, marginBottom: 14 }}
         >
           {eventosDisponibles(categoria).map((e) => (
             <option key={e.id} value={e.id}>
@@ -219,35 +226,35 @@ export default function Registrar({ userId }) {
         {categoria === "pesas" ? (
           <div style={{ display: "flex", gap: 10, marginBottom: 14 }}>
             <div style={{ flex: 1 }}>
-              <label style={{ display: "block", fontSize: 13, color: "#5B6B76", marginBottom: 5 }}>Peso (kg) *</label>
-              <input value={peso} onChange={(e) => setPeso(e.target.value)} placeholder="ej. 60" style={{ width: "100%", padding: "10px 12px", borderRadius: 9, border: "1px solid #DCD6C9", fontSize: 15 }} />
+              <label style={{ display: "block", fontSize: 13, color: "var(--text-secondary)", marginBottom: 5 }}>Peso (kg) *</label>
+              <input value={peso} onChange={(e) => setPeso(e.target.value)} placeholder="ej. 60" style={{ width: "100%", padding: "10px 12px", borderRadius: 9, border: "1px solid var(--input-border)", background: "var(--input-bg)", color: "var(--text-primary)", fontSize: 15 }} />
             </div>
             <div style={{ flex: 1 }}>
-              <label style={{ display: "block", fontSize: 13, color: "#5B6B76", marginBottom: 5 }}>Potencia (W)</label>
-              <input value={potencia} onChange={(e) => setPotencia(e.target.value)} placeholder="opcional" style={{ width: "100%", padding: "10px 12px", borderRadius: 9, border: "1px solid #DCD6C9", fontSize: 15 }} />
+              <label style={{ display: "block", fontSize: 13, color: "var(--text-secondary)", marginBottom: 5 }}>Potencia (W)</label>
+              <input value={potencia} onChange={(e) => setPotencia(e.target.value)} placeholder="opcional" style={{ width: "100%", padding: "10px 12px", borderRadius: 9, border: "1px solid var(--input-border)", background: "var(--input-bg)", color: "var(--text-primary)", fontSize: 15 }} />
             </div>
           </div>
         ) : (
           <>
             <div style={{ display: "flex", gap: 10, marginBottom: 14 }}>
               <div style={{ flex: eventoActual.viento ? 1.3 : 1 }}>
-                <label style={{ display: "block", fontSize: 13, color: "#5B6B76", marginBottom: 5 }}>Marca *</label>
+                <label style={{ display: "block", fontSize: 13, color: "var(--text-secondary)", marginBottom: 5 }}>Marca *</label>
                 <input
                   value={marca}
                   onChange={(e) => setMarca(e.target.value)}
                   placeholder={categoria === "pista" ? "ej. 10.85 o 2:05.34" : "ej. 7.85 m"}
-                  style={{ width: "100%", padding: "10px 12px", borderRadius: 9, border: "1px solid #DCD6C9", fontSize: 15 }}
+                  style={{ width: "100%", padding: "10px 12px", borderRadius: 9, border: "1px solid var(--input-border)", background: "var(--input-bg)", color: "var(--text-primary)", fontSize: 15 }}
                 />
               </div>
               {eventoActual.viento && (
                 <div style={{ flex: 1 }}>
-                  <label style={{ display: "block", fontSize: 13, color: "#5B6B76", marginBottom: 5 }}>Viento</label>
-                  <input value={viento} onChange={(e) => setViento(e.target.value)} placeholder="+1.2" style={{ width: "100%", padding: "10px 12px", borderRadius: 9, border: "1px solid #DCD6C9", fontSize: 15 }} />
+                  <label style={{ display: "block", fontSize: 13, color: "var(--text-secondary)", marginBottom: 5 }}>Viento</label>
+                  <input value={viento} onChange={(e) => setViento(e.target.value)} placeholder="+1.2" style={{ width: "100%", padding: "10px 12px", borderRadius: 9, border: "1px solid var(--input-border)", background: "var(--input-bg)", color: "var(--text-primary)", fontSize: 15 }} />
                 </div>
               )}
             </div>
 
-            <label style={{ display: "block", fontSize: 13, color: "#5B6B76", marginBottom: 5 }}>Pista o ciudad *</label>
+            <label style={{ display: "block", fontSize: 13, color: "var(--text-secondary)", marginBottom: 5 }}>Pista o ciudad *</label>
             <div style={{ marginBottom: 14 }}>
               <PistaBuscador
                 valorTexto={pistaTexto}
@@ -264,21 +271,21 @@ export default function Registrar({ userId }) {
           </>
         )}
 
-        <label style={{ display: "block", fontSize: 13, color: "#5B6B76", marginBottom: 5 }}>Fecha *</label>
+        <label style={{ display: "block", fontSize: 13, color: "var(--text-secondary)", marginBottom: 5 }}>Fecha *</label>
         <input
           type="date"
           value={fecha}
           onChange={(e) => setFecha(e.target.value)}
-          style={{ width: "100%", padding: "10px 12px", borderRadius: 9, border: "1px solid #DCD6C9", fontSize: 14, marginBottom: 14 }}
+          style={{ width: "100%", padding: "10px 12px", borderRadius: 9, border: "1px solid var(--input-border)", background: "var(--input-bg)", color: "var(--text-primary)", fontSize: 14, marginBottom: 14 }}
         />
 
-        <label style={{ display: "block", fontSize: 13, color: "#5B6B76", marginBottom: 5 }}>Nota (opcional)</label>
+        <label style={{ display: "block", fontSize: 13, color: "var(--text-secondary)", marginBottom: 5 }}>Nota (opcional)</label>
         <textarea
           value={nota}
           onChange={(e) => setNota(e.target.value)}
           placeholder="Sensaciones del día…"
           rows={2}
-          style={{ width: "100%", padding: "9px 12px", borderRadius: 9, border: "1px solid #DCD6C9", fontSize: 14, marginBottom: 14, fontFamily: "inherit", resize: "vertical" }}
+          style={{ width: "100%", padding: "9px 12px", borderRadius: 9, border: "1px solid var(--input-border)", fontSize: 14, marginBottom: 14, fontFamily: "inherit", resize: "vertical" }}
         />
 
         {error && <div style={{ color: "#B23A2E", fontSize: 13, marginBottom: 10 }}>{error}</div>}
@@ -298,39 +305,39 @@ export default function Registrar({ userId }) {
       </h2>
 
       {!cargado ? (
-        <div style={{ color: "#5B6B76", fontSize: 14 }}>Cargando…</div>
+        <div style={{ color: "var(--text-secondary)", fontSize: 14 }}>Cargando…</div>
       ) : mejoresDeCategoria.length === 0 ? (
-        <div style={{ background: "#FFFFFF", border: "1px dashed #DCD6C9", borderRadius: 12, padding: "22px 16px", textAlign: "center", color: "#5B6B76", fontSize: 14 }}>
+        <div style={{ background: "var(--card-bg)", border: "1px dashed var(--input-border)", borderRadius: 12, padding: "22px 16px", textAlign: "center", color: "var(--text-secondary)", fontSize: 14 }}>
           Todavía no registraste ninguna marca acá. Agregá la primera arriba.
         </div>
       ) : categoria === "pesas" ? (
         <div style={{ display: "flex", flexDirection: "column", gap: 9 }}>
           {mejoresDeCategoria.map((p) => (
-            <div key={p.eventoNombre} style={{ background: "#FFFFFF", borderRadius: 12, padding: "12px 14px", border: "1px solid #E7E2D8", borderLeft: "4px solid #6B4FA0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div key={p.eventoNombre} style={{ background: "var(--card-bg)", borderRadius: 12, padding: "12px 14px", border: "1px solid var(--card-border)", borderLeft: "4px solid #6B4FA0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <div>
-                <div style={{ fontSize: 13.5, fontWeight: 600, color: "#16232C" }}>{p.eventoNombre}</div>
-                <div style={{ fontSize: 11.5, color: "#5B6B76", marginTop: 2 }}>{fechaLegible(p.dato.fecha)}</div>
+                <div style={{ fontSize: 13.5, fontWeight: 600, color: "var(--text-primary)" }}>{p.eventoNombre}</div>
+                <div style={{ fontSize: 11.5, color: "var(--text-secondary)", marginTop: 2 }}>{fechaLegible(p.dato.fecha)}</div>
               </div>
-              <div style={{ fontFamily: "'Oswald', sans-serif", fontSize: 18, fontWeight: 700, color: "#8A6A12" }}>{p.dato.peso} kg</div>
+              <div style={{ fontFamily: "'Oswald', sans-serif", fontSize: 18, fontWeight: 700, color: "var(--mejor-text)" }}>{p.dato.peso} kg</div>
             </div>
           ))}
         </div>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: 9 }}>
           {mejoresDeCategoria.map((ev) => (
-            <div key={ev.eventoNombre} style={{ background: "#FFFFFF", borderRadius: 12, padding: "12px 14px", border: "1px solid #E7E2D8", borderLeft: `4px solid ${categoria === "pista" ? "#14304A" : "#E8601C"}` }}>
-              <div style={{ fontSize: 13.5, fontWeight: 600, color: "#16232C", marginBottom: 8 }}>{ev.eventoNombre}</div>
+            <div key={ev.eventoNombre} style={{ background: "var(--card-bg)", borderRadius: 12, padding: "12px 14px", border: "1px solid var(--card-border)", borderLeft: `4px solid ${categoria === "pista" ? "#14304A" : "#E8601C"}` }}>
+              <div style={{ fontSize: 13.5, fontWeight: 600, color: "var(--text-primary)", marginBottom: 8 }}>{ev.eventoNombre}</div>
               <div style={{ display: "flex", gap: 10 }}>
                 {[
                   { label: "Competencia", dato: ev.competencia, color: "#E8601C" },
-                  { label: "Entrenamiento", dato: ev.entrenamiento, color: "#5B6B76" },
+                  { label: "Entrenamiento", dato: ev.entrenamiento, color: "var(--text-secondary)" },
                 ].map(({ label, dato, color }) => (
-                  <div key={label} style={{ flex: 1, background: "#F0EDE5", borderRadius: 9, padding: "8px 10px" }}>
+                  <div key={label} style={{ flex: 1, background: "var(--seg-bg)", borderRadius: 9, padding: "8px 10px" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 2 }}>
                       <span style={{ fontSize: 10.5, fontWeight: 700, color }}>{label}</span>
-                      {dato && <span style={{ fontSize: 9.5, color: "#5B6B76" }}>{fechaLegible(dato.fecha)}</span>}
+                      {dato && <span style={{ fontSize: 9.5, color: "var(--text-secondary)" }}>{fechaLegible(dato.fecha)}</span>}
                     </div>
-                    <div style={{ fontFamily: "'Oswald', sans-serif", fontSize: 17, fontWeight: 700, color: dato ? "#8A6A12" : "#5B6B76" }}>
+                    <div style={{ fontFamily: "'Oswald', sans-serif", fontSize: 17, fontWeight: 700, color: dato ? "var(--mejor-text)" : "var(--text-secondary)" }}>
                       {dato ? formatValor(categoria, dato.valor) : "—"}
                     </div>
                   </div>
