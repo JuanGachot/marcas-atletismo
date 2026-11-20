@@ -11,10 +11,64 @@ const KEYS = {
 };
 
 const PISTAS_INICIALES = [
-  { id: "pista-curico", nombre: "Estadio La Granja", ciudad: "Curicó" },
-  { id: "pista-talca", nombre: "Estadio Fiscal", ciudad: "Talca" },
-  { id: "pista-nacional", nombre: "Coliseo Estadio Nacional", ciudad: "Santiago" },
-  { id: "pista-san-carlos", nombre: "Pista San Carlos de Apoquindo", ciudad: "Santiago" },
+  { id: "pista-angol-parque-cmpc-junquillar", nombre: "Parque CMPC Junquillar", ciudad: "Angol" },
+  { id: "pista-antofagasta-estadio-calvo-y-bascunan", nombre: "Estadio Calvo y Bascuñán", ciudad: "Antofagasta" },
+  { id: "pista-arica-ciudad-de-arica", nombre: "Ciudad de Arica", ciudad: "Arica" },
+  { id: "pista-buin-colegio-campanario", nombre: "Colegio Campanario", ciudad: "Buin" },
+  { id: "pista-chillan-estadio-quilamapu", nombre: "Estadio Quilamapu", ciudad: "Chillán" },
+  { id: "pista-coihueco-estadio-municipal-de-coihueco", nombre: "Estadio Municipal de Coihueco", ciudad: "Coihueco" },
+  { id: "pista-concepcion-estadio-ester-roa-rebolledo", nombre: "Estadio Ester Roa Rebolledo", ciudad: "Concepción" },
+  { id: "pista-concepcion-estadio-federico-schwager", nombre: "Estadio Federico Schwager", ciudad: "Concepción" },
+  { id: "pista-concepcion-fundo-coihueco", nombre: "Fundo Coihueco", ciudad: "Concepción" },
+  { id: "pista-concon-estadio-atletico-municipal", nombre: "Estadio Atlético Municipal", ciudad: "Concón" },
+  { id: "pista-copiapo-pista-atletica-ramon-tapia", nombre: "Pista Atlética Ramón Tapia", ciudad: "Copiapó" },
+  { id: "pista-curico-estadio-la-granja", nombre: "Estadio La Granja", ciudad: "Curicó" },
+  { id: "pista-iquique-estadio-cavancha", nombre: "Estadio Cavancha", ciudad: "Iquique" },
+  { id: "pista-iquique-estadio-tierra-de-campeones", nombre: "Estadio Tierra de Campeones", ciudad: "Iquique" },
+  { id: "pista-la-serena-estadio-la-portada", nombre: "Estadio La Portada", ciudad: "La Serena" },
+  { id: "pista-limache-estadio-municipal-de-limache", nombre: "Estadio Municipal de Limache", ciudad: "Limache" },
+  { id: "pista-limache-estadio-angel-navarrete-candia", nombre: "Estadio Ángel Navarrete Candía", ciudad: "Limache" },
+  { id: "pista-loncoche-parcela-municipal-loncoche", nombre: "Parcela Municipal Loncoche", ciudad: "Loncoche" },
+  { id: "pista-los-angeles-estadio-de-los-angeles", nombre: "Estadio de Los Ángeles", ciudad: "Los Ángeles" },
+  { id: "pista-osorno-pista-lycee-claude-gay", nombre: "Pista Lycée Claude Gay", ciudad: "Osorno" },
+  { id: "pista-osorno-pista-villa-olimpica-osorno", nombre: "Pista Villa Olímpica Osorno", ciudad: "Osorno" },
+  { id: "pista-ovalle-estadio-diaguita", nombre: "Estadio Diaguita", ciudad: "Ovalle" },
+  { id: "pista-padre-hurtado-colegio-boston-academy", nombre: "Colegio Boston Academy", ciudad: "Padre Hurtado" },
+  { id: "pista-parral-estadio-fiscal-de-parral", nombre: "Estadio Fiscal de Parral", ciudad: "Parral" },
+  { id: "pista-pitrufquen-plaza-de-armas-pitrufquen", nombre: "Plaza de Armas Pitrufquén", ciudad: "Pitrufquén" },
+  { id: "pista-puerto-montt-estadio-pichipelluco", nombre: "Estadio Pichipelluco", ciudad: "Puerto Montt" },
+  { id: "pista-puerto-montt-pista-atletica-ind-puerto-montt", nombre: "Pista Atlética IND Puerto Montt", ciudad: "Puerto Montt" },
+  { id: "pista-puerto-varas-colegio-puerto-varas", nombre: "Colegio Puerto Varas", ciudad: "Puerto Varas" },
+  { id: "pista-quillota-instituto-rafael-ariztia", nombre: "Instituto Rafael Ariztía", ciudad: "Quillota" },
+  { id: "pista-rancagua-colegio-la-cruz", nombre: "Colegio La Cruz", ciudad: "Rancagua" },
+  { id: "pista-rancagua-estadio-marista", nombre: "Estadio Marista", ciudad: "Rancagua" },
+  { id: "pista-rancagua-pista-atletica-patricio-mekis", nombre: "Pista Atlética Patricio Mekis", ciudad: "Rancagua" },
+  { id: "pista-san-fernando-estadio-municipal-de-san-fernando", nombre: "Estadio Municipal de San Fernando", ciudad: "San Fernando" },
+  { id: "pista-santiago-club-deportivo-manquehue", nombre: "Club Deportivo Manquehue", ciudad: "Santiago" },
+  { id: "pista-santiago-colegio-aleman-de-santiago", nombre: "Colegio Alemán de Santiago", ciudad: "Santiago" },
+  { id: "pista-santiago-colegio-nido-de-aguilas", nombre: "Colegio Nido de Águilas", ciudad: "Santiago" },
+  { id: "pista-santiago-colegio-saint-george-s", nombre: "Colegio Saint George's", ciudad: "Santiago" },
+  { id: "pista-santiago-colegio-san-ignacio-el-bosque", nombre: "Colegio San Ignacio El Bosque", ciudad: "Santiago" },
+  { id: "pista-santiago-colegio-santa-ursula", nombre: "Colegio Santa Úrsula", ciudad: "Santiago" },
+  { id: "pista-santiago-colegio-sscc-manquehue", nombre: "Colegio SSCC Manquehue", ciudad: "Santiago" },
+  { id: "pista-santiago-colegio-tabancura", nombre: "Colegio Tabancura", ciudad: "Santiago" },
+  { id: "pista-santiago-colegio-verbo-divino", nombre: "Colegio Verbo Divino", ciudad: "Santiago" },
+  { id: "pista-santiago-escuela-de-policia-de-investigaciones", nombre: "Escuela de Policía de Investigaciones", ciudad: "Santiago" },
+  { id: "pista-santiago-escuela-militar", nombre: "Escuela Militar", ciudad: "Santiago" },
+  { id: "pista-santiago-estadio-bernardo-o-higgins", nombre: "Estadio Bernardo O'Higgins", ciudad: "Santiago" },
+  { id: "pista-santiago-estadio-militar", nombre: "Estadio Militar", ciudad: "Santiago" },
+  { id: "pista-santiago-estadio-nacional-julio-martinez-pradanos", nombre: "Estadio Nacional Julio Martínez Prádanos / Est. Nac. Mario Recordón", ciudad: "Santiago" },
+  { id: "pista-santiago-polideportivo-nueva-alemania", nombre: "Polideportivo Nueva Alemania", ciudad: "Santiago" },
+  { id: "pista-santiago-poligono-lo-aguirre", nombre: "Polígono Lo Aguirre", ciudad: "Santiago" },
+  { id: "pista-santiago-san-carlos-de-apoquindo", nombre: "San Carlos de Apoquindo", ciudad: "Santiago" },
+  { id: "pista-talagante-colegio-carampangue", nombre: "Colegio Carampangue", ciudad: "Talagante" },
+  { id: "pista-talagante-estadio-lucas-pacheco", nombre: "Estadio Lucas Pacheco", ciudad: "Talagante" },
+  { id: "pista-talca-estadio-fiscal-de-talca", nombre: "Estadio Fiscal de Talca", ciudad: "Talca" },
+  { id: "pista-temuco-pista-atletica-lazaro-escobar", nombre: "Pista Atlética Lázaro Escobar", ciudad: "Temuco" },
+  { id: "pista-valdivia-estadio-parque-municipal-de-valdivia", nombre: "Estadio Parque Municipal de Valdivia", ciudad: "Valdivia" },
+  { id: "pista-valparaiso-escuela-naval", nombre: "Escuela Naval", ciudad: "Valparaíso" },
+  { id: "pista-valparaiso-estadio-elias-figueroa", nombre: "Estadio Elías Figueroa", ciudad: "Valparaíso" },
+  { id: "pista-vina-del-mar-colegio-sscc-padres-franceses", nombre: "Colegio SSCC Padres Franceses", ciudad: "Viña del Mar" },
 ];
 
 let accessToken = null;
@@ -40,16 +94,41 @@ export function getEstadoDrive() {
   };
 }
 
+function clavePista(p) {
+  return `${(p.nombre || "").trim().toLowerCase()}|${(p.ciudad || "").trim().toLowerCase()}`;
+}
+
+function fusionarPistas(guardadas) {
+  const listaGuardada = Array.isArray(guardadas) ? guardadas : [];
+  const vistas = new Set(listaGuardada.map((p) => clavePista(p)));
+  const idsVistos = new Set(listaGuardada.map((p) => p.id));
+  const combinadas = [...listaGuardada];
+
+  for (const base of PISTAS_INICIALES) {
+    const clave = clavePista(base);
+    if (!vistas.has(clave) && !idsVistos.has(base.id)) {
+      combinadas.push(base);
+      vistas.add(clave);
+      idsVistos.add(base.id);
+    }
+  }
+  return combinadas;
+}
+
 function leerTabla(tabla) {
   try {
     const raw = localStorage.getItem(KEYS[tabla]);
-    if (!raw && tabla === "pistas") {
-      escribirTabla("pistas", PISTAS_INICIALES);
-      return PISTAS_INICIALES;
+    if (tabla === "pistas") {
+      const parseadas = raw ? JSON.parse(raw) : [];
+      const combinadas = fusionarPistas(parseadas);
+      if (combinadas.length !== parseadas.length) {
+        localStorage.setItem(KEYS.pistas, JSON.stringify(combinadas));
+      }
+      return combinadas;
     }
     return raw ? JSON.parse(raw) : [];
   } catch {
-    return [];
+    return tabla === "pistas" ? [...PISTAS_INICIALES] : [];
   }
 }
 
@@ -145,9 +224,9 @@ export async function sincronizarDesdeDrive() {
 
   if (Array.isArray(datosNube.marcas)) escribirTabla("marcas", datosNube.marcas, false);
   if (Array.isArray(datosNube.pesas)) escribirTabla("pesas", datosNube.pesas, false);
-  if (Array.isArray(datosNube.pistas) && datosNube.pistas.length > 0) {
-    escribirTabla("pistas", datosNube.pistas, false);
-  }
+  const pistasFusionadas = fusionarPistas(datosNube.pistas);
+  escribirTabla("pistas", pistasFusionadas, false);
+  await subirADrive();
 
   notificarEstado();
   return { accion: "descargado" };
