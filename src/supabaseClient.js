@@ -75,6 +75,7 @@ let accessToken = null;
 let driveFileId = null;
 let tokenClient = null;
 let listeners = new Set();
+let colaSync = Promise.resolve();
 
 function notificarEstado() {
   const estado = getEstadoDrive();
@@ -115,6 +116,17 @@ function fusionarPistas(guardadas) {
   return combinadas;
 }
 
+function fusionarRegistrosPorId(locales = [], remotos = []) {
+  const mapa = new Map();
+  for (const item of remotos || []) {
+    if (item && item.id) mapa.set(item.id, item);
+  }
+  for (const item of locales || []) {
+    if (item && item.id) mapa.set(item.id, item);
+  }
+  return Array.from(mapa.values());
+}
+
 function leerTabla(tabla) {
   try {
     const raw = localStorage.getItem(KEYS[tabla]);
@@ -132,10 +144,21 @@ function leerTabla(tabla) {
   }
 }
 
+function encolarSubidaDrive() {
+  if (!accessToken) return Promise.resolve();
+  colaSync = colaSync
+    .catch(() => {})
+    .then(() => subirADrive());
+  return colaSync;
+}
+
 function escribirTabla(tabla, datos, sincronizar = true) {
   localStorage.setItem(KEYS[tabla], JSON.stringify(datos));
   if (sincronizar && accessToken) {
-    subirADrive().catch((err) => console.error("Error sincronizando Drive:", err));
+    encolarSubidaDrive().catch((err) => {
+      console.error("Error sincronizando Drive:", err);
+      alert("No se pudo subir el cambio a Google Drive: " + (err.message || err));
+    });
   }
 }
 
@@ -155,7 +178,7 @@ function armarSnapshot() {
 
 async function buscarArchivoEnDrive() {
   const q = encodeURIComponent(`name='${DRIVE_FILE_NAME}' and trashed=false`);
-  const res = await fetch(`https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id,name,modifiedTime)`, {
+  const res = await fetch(`https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id,name,modifiedTime)&orderBy=modifiedTime%20desc`, {
     headers: { Authorization: `Bearer ${accessToken}` },
   });
   if (!res.ok) throw new Error("No se pudo consultar Google Drive");
@@ -222,12 +245,15 @@ export async function sincronizarDesdeDrive() {
   driveFileId = archivo.id;
   const datosNube = await descargarArchivoDrive(archivo.id);
 
-  if (Array.isArray(datosNube.marcas)) escribirTabla("marcas", datosNube.marcas, false);
-  if (Array.isArray(datosNube.pesas)) escribirTabla("pesas", datosNube.pesas, false);
-  const pistasFusionadas = fusionarPistas(datosNube.pistas);
-  escribirTabla("pistas", pistasFusionadas, false);
-  await subirADrive();
+  const marcasCombinadas = fusionarRegistrosPorId(leerTabla("marcas"), datosNube.marcas);
+  const pesasCombinadas = fusionarRegistrosPorId(leerTabla("pesas"), datosNube.pesas);
+  const pistasCombinadas = fusionarPistas(fusionarRegistrosPorId(leerTabla("pistas"), datosNube.pistas));
 
+  escribirTabla("marcas", marcasCombinadas, false);
+  escribirTabla("pesas", pesasCombinadas, false);
+  escribirTabla("pistas", pistasCombinadas, false);
+
+  await subirADrive();
   notificarEstado();
   return { accion: "descargado" };
 }
