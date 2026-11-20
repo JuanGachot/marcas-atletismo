@@ -1,5 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { eventosDisponibles } from "./eventos";
+import {
+  conectarGoogleDrive,
+  desconectarGoogleDrive,
+  sincronizarDesdeDrive,
+  suscribirEstadoDrive,
+} from "./supabaseClient";
 import Registrar from "./Registrar";
 import Historico from "./Historico";
 import Progreso from "./Progreso";
@@ -11,6 +17,8 @@ export default function App() {
   const [vista, setVista] = useState("registrar");
   const [ajustesAbiertos, setAjustesAbiertos] = useState(false);
   const [recargarClave, setRecargarClave] = useState(0);
+  const [estadoDrive, setEstadoDrive] = useState({ conectado: false, archivoId: null });
+  const [sincronizando, setSincronizando] = useState(false);
 
   const [tema, setTema] = useState(() => localStorage.getItem("tema") || "claro");
   const [pistaDefecto, setPistaDefecto] = useState(() => {
@@ -30,21 +38,69 @@ export default function App() {
     }
   });
 
+  useEffect(() => {
+    return suscribirEstadoDrive(setEstadoDrive);
+  }, []);
+
+  async function manejarDrive() {
+    setSincronizando(true);
+    try {
+      if (!estadoDrive.conectado) {
+        await conectarGoogleDrive();
+        setRecargarClave((k) => k + 1);
+      } else {
+        await sincronizarDesdeDrive();
+        setRecargarClave((k) => k + 1);
+      }
+    } catch (err) {
+      alert(err.message || "No se pudo conectar con Google Drive.");
+    } finally {
+      setSincronizando(false);
+    }
+  }
+
   return (
     <div className="app-root" data-theme={tema}>
       <div style={{ background: "linear-gradient(135deg, #14304A 0%, #1E4568 100%)", padding: "20px 16px" }}>
-        <div style={{ maxWidth: 480, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div style={{ maxWidth: 480, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
           <div>
-            <div style={{ color: "#BFD0DE", fontSize: 12 }}>Modo offline · Memoria local</div>
+            <div style={{ color: "#BFD0DE", fontSize: 12 }}>
+              {estadoDrive.conectado ? "☁️ Google Drive conectado" : "📱 Memoria local (offline)"}
+            </div>
             <h1 style={{ fontFamily: "'Oswald', sans-serif", color: "#FFFFFF", fontSize: 22, fontWeight: 700, margin: 0 }}>
               Mis marcas de atletismo
             </h1>
           </div>
-          <div style={{ display: "flex", gap: 8 }}>
+          <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+            <button
+              onClick={manejarDrive}
+              disabled={sincronizando}
+              style={{
+                background: estadoDrive.conectado ? "rgba(46,125,91,0.9)" : "rgba(255,255,255,0.16)",
+                border: "none",
+                borderRadius: 8,
+                padding: "8px 10px",
+                color: "#FFFFFF",
+                fontSize: 12,
+                fontWeight: 600,
+                cursor: "pointer",
+              }}
+            >
+              {sincronizando ? "…" : estadoDrive.conectado ? "↻ Drive" : "Drive"}
+            </button>
+            {estadoDrive.conectado && (
+              <button
+                onClick={desconectarGoogleDrive}
+                title="Desconectar Google Drive"
+                style={{ background: "rgba(255,255,255,0.12)", border: "none", borderRadius: 8, padding: "8px 8px", color: "#F7F5F0", fontSize: 12, cursor: "pointer" }}
+              >
+                ✕
+              </button>
+            )}
             <button
               onClick={() => setAjustesAbiertos(true)}
               aria-label="Ajustes"
-              style={{ background: "rgba(255,255,255,0.12)", border: "none", borderRadius: 8, padding: 9, color: "#F7F5F0", cursor: "pointer", fontSize: 16 }}
+              style={{ background: "rgba(255,255,255,0.12)", border: "none", borderRadius: 8, padding: 8, color: "#F7F5F0", cursor: "pointer", fontSize: 15 }}
             >
               ⚙️
             </button>
