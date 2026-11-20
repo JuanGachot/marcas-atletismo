@@ -6,7 +6,7 @@ import PistaBuscador from "./PistaBuscador";
 
 export default function Registrar({ userId, pistaDefecto }) {
   const [categoria, setCategoria] = useState("pista");
-  const [tipo, setTipo] = useState("competencia");
+  const [tipo, setTipo] = useState("entrenamiento");
   const [eventoId, setEventoId] = useState(EVENTOS.pista[5].id); // 100 m
   const [marca, setMarca] = useState("");
   const [viento, setViento] = useState("");

@@ -1,14 +1,13 @@
-import { useEffect, useState } from "react";
-import { supabase } from "./supabaseClient";
+import { useState } from "react";
 import { eventosDisponibles } from "./eventos";
-import Auth from "./Auth";
 import Registrar from "./Registrar";
 import Historico from "./Historico";
 import Progreso from "./Progreso";
 import Ajustes from "./Ajustes";
 
+const USER_ID_LOCAL = "atleta-local";
+
 export default function App() {
-  const [sesion, setSesion] = useState(undefined);
   const [vista, setVista] = useState("registrar");
   const [ajustesAbiertos, setAjustesAbiertos] = useState(false);
   const [recargarClave, setRecargarClave] = useState(0);
@@ -31,30 +30,12 @@ export default function App() {
     }
   });
 
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => setSesion(data.session));
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, nuevaSesion) => setSesion(nuevaSesion));
-    return () => listener.subscription.unsubscribe();
-  }, []);
-
-  if (sesion === undefined) {
-    return (
-      <div className="app-root" data-theme={tema} style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--text-secondary)" }}>
-        Cargando…
-      </div>
-    );
-  }
-
-  if (!sesion) {
-    return <Auth />;
-  }
-
   return (
     <div className="app-root" data-theme={tema}>
       <div style={{ background: "linear-gradient(135deg, #14304A 0%, #1E4568 100%)", padding: "20px 16px" }}>
         <div style={{ maxWidth: 480, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div>
-            <div style={{ color: "#BFD0DE", fontSize: 12 }}>{sesion.user.email}</div>
+            <div style={{ color: "#BFD0DE", fontSize: 12 }}>Modo offline · Memoria local</div>
             <h1 style={{ fontFamily: "'Oswald', sans-serif", color: "#FFFFFF", fontSize: 22, fontWeight: 700, margin: 0 }}>
               Mis marcas de atletismo
             </h1>
@@ -66,12 +47,6 @@ export default function App() {
               style={{ background: "rgba(255,255,255,0.12)", border: "none", borderRadius: 8, padding: 9, color: "#F7F5F0", cursor: "pointer", fontSize: 16 }}
             >
               ⚙️
-            </button>
-            <button
-              onClick={() => supabase.auth.signOut()}
-              style={{ background: "rgba(255,255,255,0.12)", border: "none", borderRadius: 8, padding: "8px 12px", color: "#F7F5F0", fontSize: 12.5, cursor: "pointer" }}
-            >
-              Salir
             </button>
           </div>
         </div>
@@ -105,13 +80,13 @@ export default function App() {
         </div>
       </div>
 
-      {vista === "registrar" && <Registrar key={`reg-${recargarClave}`} userId={sesion.user.id} pistaDefecto={pistaDefecto} />}
-      {vista === "progreso" && <Progreso key={`prog-${recargarClave}`} userId={sesion.user.id} pruebaDefecto={pruebaDefecto} tema={tema} />}
-      {vista === "historico" && <Historico key={`hist-${recargarClave}`} userId={sesion.user.id} />}
+      {vista === "registrar" && <Registrar key={`reg-${recargarClave}`} userId={USER_ID_LOCAL} pistaDefecto={pistaDefecto} />}
+      {vista === "progreso" && <Progreso key={`prog-${recargarClave}`} userId={USER_ID_LOCAL} pruebaDefecto={pruebaDefecto} tema={tema} />}
+      {vista === "historico" && <Historico key={`hist-${recargarClave}`} userId={USER_ID_LOCAL} />}
 
       {ajustesAbiertos && (
         <Ajustes
-          userId={sesion.user.id}
+          userId={USER_ID_LOCAL}
           tema={tema}
           setTema={setTema}
           pistaDefecto={pistaDefecto}
